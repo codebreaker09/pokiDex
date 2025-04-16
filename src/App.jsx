@@ -4,10 +4,10 @@ function App() {
   const [pokemon, setPokemon] = useState([]);
 
   useEffect(() => {
-    fetch('https://pokeapi.co/api/v2/pokemon?limit=60')
+    fetch('https://pokeapi.co/api/v2/pokemon?limit=20')
       .then((res) => res.json())
       .then((data) => {
-        console.log('Pokemon:', data.results);
+        setPokemon(data.results);
       })
       .catch((error) => {
         console.error('Error fetching Pokemon:', error);
@@ -17,7 +17,11 @@ function App() {
   return (
     <div>
       <h1>Pokedex</h1>
-      <p>Filler for now</p>
+      <ul>
+        {pokemon.map((poke, index) => (
+          <li key={index}>{poke.name}</li>
+        ))}
+      </ul>
     </div>
   );
 }
