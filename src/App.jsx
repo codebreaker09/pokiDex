@@ -1,27 +1,45 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 function App() {
-  const [pokemon, setPokemon] = useState([]);
+  const [pokemon, setPokemon] = useState(null);
+  const [search, setSearch] = useState('');
 
-  useEffect(() => {
-    fetch('https://pokeapi.co/api/v2/pokemon?limit=20')
-      .then((res) => res.json())
-      .then((data) => {
-        setPokemon(data.results);
+  const handleSearch = () => {
+    fetch(`https://pokeapi.co/api/v2/pokemon/${search.toLowerCase()}`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Pokemon no found');
+        }
+        return res.json();
       })
-      .catch((error) => {
-        console.error('Error fetching Pokemon:', error);
+      .then((data) => {
+        setPokemon(data);
+      })
+      .catch((err) => {
+        console.error(err, 'Error');
       });
-  }, []);
+  };
 
   return (
     <div>
       <h1>Pokedex</h1>
-      <ul>
-        {pokemon.map((poke, index) => (
-          <li key={index}>{poke.name}</li>
-        ))}
-      </ul>
+      <input
+        type='text'
+        placeholder='Enter Pokemon name or ID'
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+      <button onClick={search}>Search</button>
+
+      {pokemon && (
+        <div>
+          <h2>{pokemon.name}</h2>
+          <img src={pokemon.sprites.front.default} alt={pokemon.name} />
+          <p>Height: {pokemon.height}</p>
+          <p>Weight: {pokemon.weight}</p>
+          <p>Type: {pokemon.types.map((t) => t.type.name).join(', ')}</p>
+        </div>
+      )}
     </div>
   );
 }
