@@ -29,12 +29,12 @@ function App() {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
-      <button onClick={search}>Search</button>
+      <button onClick={handleSearch}>Search</button>
 
-      {pokemon && (
+      {(
         <div>
           <h2>{pokemon.name}</h2>
-          <img src={pokemon.sprites.front.default} alt={pokemon.name} />
+          <img src={pokemon.image} alt={pokemon.name} />
           <p>Height: {pokemon.height}</p>
           <p>Weight: {pokemon.weight}</p>
           <p>Type: {pokemon.types.map((t) => t.type.name).join(', ')}</p>
