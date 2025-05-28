@@ -30,14 +30,21 @@ function App() {
         placeholder='Enter Pokemon name or ID'
         value={search}
         onChange={(e) => setSearch(e.target.value)}
+        className='p-2 rounded border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-red-400'
       />
-      <button onClick={handleSearch}>Search</button>
+      <button
+       onClick={handleSearch}
+       className='bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition'>Search</button>
       </div>
 
       {pokemon && (
-        <div>
-          <h2>{pokemon.name}</h2>
-          <img src={pokemon.sprites.front_default} alt={pokemon.name} />
+        <div className='bg-white rounded-lg shadow-lg p-6 w-80 text-center border-2 border-red-300'>
+          <h2 className='text-2xl font-semibold capitalize mb-2'>{pokemon.name}</h2>
+          <img
+          src={pokemon.sprites.front_default}
+          alt={pokemon.name}
+          className='mx-auto mb-4 w-32 h-32'
+           />
           <p>Height: {pokemon.height}</p>
           <p>Weight: {pokemon.weight}</p>
           <p>Type: {pokemon.types.map((t) => t.type.name).join(', ')}</p>
