@@ -17,19 +17,22 @@ function App() {
       })
       .catch((err) => {
         console.error(err, 'Error');
+        setPokemon(null);
       });
   };
 
   return (
-    <div>
-      <h1>Pokedex</h1>
-      <input
+    <div className='min-h-screen bg-gradient-to-br from-red-100 to-white flex flex-col items-center p-6 font-sans'>
+      <h1 className='text-4xl font-bold text-red-600 mb-6'>Pokedex</h1>
+      <div className='flex gap-2 mb-8'>
+        <input
         type='text'
         placeholder='Enter Pokemon name or ID'
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
       <button onClick={handleSearch}>Search</button>
+      </div>
 
       {pokemon && (
         <div>
