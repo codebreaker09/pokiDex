@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import useSearch from '../hooks/useSearch';
 
 function Search() {
-  const { handleSearch, search, pokemonData, handleOnChange } = useSearch();
+  const { handleSearch, search, pokemonData, setSearch, description } =
+    useSearch();
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-red-100 to-white flex flex-col items-center p-6 font-sans'>
@@ -12,7 +13,7 @@ function Search() {
           type='text'
           placeholder='Enter Pokemon name or ID'
           value={search}
-          onChange={(e)=> handleOnChange(e)}
+          onChange={(e) => setSearch(e.target.value)}
           className='p-2 rounded border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-red-400'
         />
         <button
@@ -36,6 +37,7 @@ function Search() {
           <p>Height: {pokemonData.height}</p>
           <p>Weight: {pokemonData.weight}</p>
           <p>Type: {pokemonData.types.map((t) => t.type.name).join(', ')}</p>
+          <p>Description: {description}</p>
         </div>
       )}
     </div>

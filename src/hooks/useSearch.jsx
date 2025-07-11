@@ -1,72 +1,43 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 const useSearch = () => {
-  const [pokemonData, setPokemonData] = useState(null);
   const [search, setSearch] = useState('');
-  // const [isLoading, setIsLoading] = useState(true);
-  const [characteristicsData, setCharacteristicsData] = useState(null);
+  const [pokemonData, setPokemonData] = useState(null);
+  const [description, setDescription] = useState('');
 
-  const handleSearch = useCallback(() => {
+  const handleSearch = () => {
     fetch(`https://pokeapi.co/api/v2/pokemon/${search.toLowerCase()}`)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error('Pokemon no found');
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setPokemonData(data);
-        console.log(data);
+      .then((res) => res.json())
+      .then((pokemon) => {
+        setPokemonData(pokemon);
       })
       .catch((err) => {
         console.error(err, 'Error');
-        setPokemonData(null);
       });
-  }, [search]);
-
-  const handleOnChange = useCallback((e) => {
-    setSearch(e.target.value);
-  }, []);
+  };
 
   useEffect(() => {
     if (pokemonData?.id) {
-      fetch(`https://pokeapi.co/api/v2/characteristic/${pokemonData.id}/`)
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error('Pokemon no found');
-          }
-          return res.json();
-        })
-        .then((characteristicsResponse) => {
-          setCharacteristicsData(characteristicsResponse);
+      fetch(`https://pokeapi.co/api/v2/characteristic/${pokemonData.id}`)
+        .then((res) => res.json())
+        .then((characteristic) => {
+          const english = characteristic.descriptions.find(
+            (desc) => desc.language.name === 'en'
+          );
+          setDescription(english.description);
         })
         .catch((err) => {
           console.error(err, 'Error');
-          setCharacteristicsData(null);
         });
     }
-  },[pokemonData?.id]);
-
-  /*
-  Optional Chaining:
-  ?. protects us against errors when a property is not present
-  
-  Examples:
-  pokemonData = {} || [] || { foobar: 'foo' } || undefined
-  pokemonData.id ===> ERROR!!
-  pokemonData?.id ===> undefined
-
-  Your next task:
-  1. Get description and any other fun pieces of data from the data we get from this endpoint: `https://pokeapi.co/api/v2/characteristic/${pokemonData.id}/` onto the page / card
-  2. Bonus: Create a way to save your favorite card
-  */
+  }, [pokemonData]);
 
   return {
     handleSearch,
-    pokemonData,
     search,
-    characteristicsData,
-    handleOnChange,
+    setSearch,
+    pokemonData,
+    description,
   };
 };
 
