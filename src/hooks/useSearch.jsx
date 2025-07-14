@@ -53,6 +53,12 @@ const useSearch = () => {
     localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
   }
 
+  const removeFavorite = (nameToRemove) => {
+    const updated = favorites.filter(fav => fav.name !== nameToRemove);
+    setFavorites(updated);
+    localStorage.setItem('favorites', JSON.stringify(updated))
+  };
+
   return {
     handleSearch,
     search,
@@ -61,6 +67,7 @@ const useSearch = () => {
     description,
     handleFavorite,
     favorites,
+    removeFavorite,
   };
 };
 

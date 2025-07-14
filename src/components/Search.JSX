@@ -10,6 +10,7 @@ function Search() {
     description,
     handleFavorite,
     favorites,
+    removeFavorite,
   } = useSearch();
 
   return (
@@ -54,6 +55,7 @@ function Search() {
           <li key={index}>
             {poke.name}
             <img src={poke.image} alt={poke.name} width={50} />
+            <button onClick={() => removeFavorite(poke.name)}>Remove</button>
           </li>
         ))}
       </ul>
