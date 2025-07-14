@@ -5,6 +5,7 @@ const useSearch = () => {
   const [pokemonData, setPokemonData] = useState(null);
   const [description, setDescription] = useState('');
   const [favorites, setFavorites] = useState([]);
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
 
   const handleSearch = () => {
     fetch(`https://pokeapi.co/api/v2/pokemon/${search.toLowerCase()}`)
@@ -68,6 +69,8 @@ const useSearch = () => {
     handleFavorite,
     favorites,
     removeFavorite,
+    showFavoritesOnly,
+    setShowFavoritesOnly,
   };
 };
 

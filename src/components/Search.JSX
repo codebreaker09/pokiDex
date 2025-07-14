@@ -11,54 +11,79 @@ function Search() {
     handleFavorite,
     favorites,
     removeFavorite,
+    showFavoritesOnly,
+    setShowFavoritesOnly,
   } = useSearch();
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-red-100 to-white flex flex-col items-center p-6 font-sans'>
-      <h1 className='text-4xl font-bold text-red-600 mb-6'>Pokedex</h1>
-      <div className='flex gap-2 mb-8'>
-        <input
-          type='text'
-          placeholder='Enter Pokemon name or ID'
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className='p-2 rounded border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-red-400'
-        />
-        <button
-          onClick={handleSearch}
-          className='bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition'
-        >
-          Search
-        </button>
-      </div>
+    <div className=''>
+      <h1 className=''>Pokedex</h1>
+      <button onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}>
+        {showFavoritesOnly ? 'Show Search' : 'Show Favorites'}
+      </button>
+      {!showFavoritesOnly && (
+        <>
+          <div className=''>
+            <input
+              type='text'
+              placeholder='Enter Pokemon name of ID'
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className=''
+            />
+            <button onClick={handleSearch} className=''>
+              Search
+            </button>
+          </div>
 
-      {pokemonData && (
-        <div className='bg-white rounded-lg shadow-lg p-6 w-80 text-center border-2 border-red-300'>
-          <h2 className='text-2xl font-semibold capitalize mb-2'>
-            {pokemonData.name}
-          </h2>
-          <img
-            src={pokemonData.sprites.front_default}
-            alt={pokemonData.name}
-            className='mx-auto mb-4 w-32 h-32'
-          />
-          <p>Height: {pokemonData.height}</p>
-          <p>Weight: {pokemonData.weight}</p>
-          <p>Type: {pokemonData.types.map((t) => t.type.name).join(', ')}</p>
-          <p>Description: {description}</p>
-          <button onClick={handleFavorite} className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition'>Favorite</button>
+          {pokemonData && (
+            <div className=''>
+              <h2 className=''>{pokemonData.name}</h2>
+              <img
+                src={pokemonData.sprites.front_default}
+                alt={pokemonData.name}
+                className=''
+              />
+              <p>Height: {pokemonData.height}</p>
+              <p>Weight: {pokemonData.weight}</p>
+              <p>
+                Type: {pokemonData.types.map((t) => t.type.name).join(', ')}
+              </p>
+              <p>{description}</p>
+
+              <button onClick={handleFavorite} className=''>
+                Add to Favorites
+              </button>
+            </div>
+          )}
+        </>
+      )}
+
+      {showFavoritesOnly && (
+        <div className=''>
+          <h2 className=''>Your Favorites</h2>
+          {favorites.length === 0 ? (
+            <p>No favorites yet.</p>
+          ) : (
+            <ul className=''>
+              {favorites.map((poke, index) => (
+                <li key={index} className=''>
+                  <div className=''>
+                    <img src={poke.image} alt={poke.name} className='' />
+                    <span className=''>{poke.name}</span>
+                  </div>
+                  <button
+                    onClick={() => removeFavorite(poke.name)}
+                    className=''
+                  >
+                    Remove
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       )}
-      <h2>Favorites</h2>
-      <ul>
-        {favorites.map((poke, index) => (
-          <li key={index}>
-            {poke.name}
-            <img src={poke.image} alt={poke.name} width={50} />
-            <button onClick={() => removeFavorite(poke.name)}>Remove</button>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }
