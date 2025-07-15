@@ -1,7 +1,8 @@
 import React from 'react';
+import Search from './components/Search.jsx';
 
 function App() {
-  return <h1>PokiDex</h1>;
+  return <Search />;
 }
 
 export default App;
