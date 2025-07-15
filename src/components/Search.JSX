@@ -29,7 +29,7 @@ function Search() {
           <div className='flex gap-2 mb-8'>
             <input
               type='text'
-              placeholder='Enter Pokemon name of ID'
+              placeholder='Enter Pokemon name or ID'
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className='p-2 border rounded'
@@ -77,25 +77,30 @@ function Search() {
             <p>No favorites yet.</p>
           ) : (
             <ul className='space-y-4'>
-              {favorites.map((poke, index) => (
+              {favorites.map((poke) => (
                 <li
-                  key={index}
+                  key={poke.id}
                   className='flex items-center bg-white justify-between border p-2 rounded'
                 >
+                  <div>
+                    <div className='font-medium'>
+                      #{poke.id} {poke.name}
+                    </div>
+                    <p>Type: {poke.types.join(', ')}</p>
+                  </div>
                   <div className='flex items-center gap-4'>
                     <img
                       src={poke.image}
                       alt={poke.name}
                       className='w-12 h-12'
                     />
-                    <span className='capitalize font-medium'>{poke.name}</span>
+                    <button
+                      onClick={() => removeFavorite(poke.name)}
+                      className='px-2 py-1 bg-red-400 text-white rounded'
+                    >
+                      Remove
+                    </button>
                   </div>
-                  <button
-                    onClick={() => removeFavorite(poke.name)}
-                    className='px-2 py-1 bg-red-400 text-white rounded'
-                  >
-                    Remove
-                  </button>
                 </li>
               ))}
             </ul>

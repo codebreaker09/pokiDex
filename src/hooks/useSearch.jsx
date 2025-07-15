@@ -45,8 +45,10 @@ const useSearch = () => {
     if (!pokemonData) return;
 
     const newFavorite = {
+      id: pokemonData.id,
       name: pokemonData.name,
       image: pokemonData.sprites.front_default,
+      types: pokemonData.types.map((t) => t.type.name),
     };
 
     const alreadyFavorited = favorites.some(
