@@ -45,8 +45,8 @@ function Search() {
       )}
 
       {showFavoritesOnly && (
-        <div className=''>
-          <h2 className=''>Your Favorites</h2>
+        <div className='w-full max-w-md'>
+          <h2 className='text-xl font-bold mb-4'>Your Favorites</h2>
           <FavoritesList
             favorites={favorites}
             removeFavorite={removeFavorite}
