@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 const useSearch = () => {
   const [search, setSearch] = useState('');
@@ -7,7 +7,7 @@ const useSearch = () => {
   const [favorites, setFavorites] = useState([]);
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
 
-  const handleSearch = () => {
+  const handleSearch = useCallback(() => {
     fetch(`https://pokeapi.co/api/v2/pokemon/${search.toLowerCase()}`)
       .then((res) => res.json())
       .then((data) => {
@@ -16,7 +16,7 @@ const useSearch = () => {
       .catch((err) => {
         console.error('Error:', err);
       });
-  };
+  }, [search]);
 
   useEffect(() => {
     if (pokemonData?.id) {
@@ -41,7 +41,7 @@ const useSearch = () => {
     }
   }, []);
 
-  const handleFavorite = () => {
+  const handleFavorite = useCallback(() => {
     if (!pokemonData) return;
 
     const newFavorite = {
@@ -52,7 +52,7 @@ const useSearch = () => {
     };
 
     const alreadyFavorited = favorites.some(
-      (fav) => fav.name === newFavorite.name
+      (poke) => poke.name === newFavorite.name
     );
 
     if (!alreadyFavorited) {
@@ -60,13 +60,16 @@ const useSearch = () => {
       setFavorites(updatedFavorites);
       localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
     }
-  };
+  }, [favorites, pokemonData]);
 
-  const removeFavorite = (nameToRemove) => {
-    const updated = favorites.filter((fav) => fav.name !== nameToRemove);
-    setFavorites(updated);
-    localStorage.setItem('favorites', JSON.stringify(updated));
-  };
+  const removeFavorite = useCallback(
+    (name) => {
+      const updated = favorites.filter((poke) => poke.name !== name);
+      setFavorites(updated);
+      localStorage.setItem('favorites', JSON.stringify(updated));
+    },
+    [favorites]
+  );
 
   return {
     handleSearch,

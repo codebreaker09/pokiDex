@@ -10,9 +10,10 @@ function SearchForm({ search, setSearch, handleSearch }) {
         onChange={(e) => setSearch(e.target.value)}
         className='p-2 border rounded'
       />
-      <button 
-      onClick={handleSearch}
-       className='bg-green-500 text-white px-4 py-2 rounded'>
+      <button
+        onClick={handleSearch}
+        className='bg-green-500 text-white px-4 py-2 rounded'
+      >
         Search
       </button>
     </div>
