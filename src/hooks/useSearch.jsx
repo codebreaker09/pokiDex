@@ -4,15 +4,17 @@ const useSearch = () => {
   const [search, setSearch] = useState('');
   const [pokemonData, setPokemonData] = useState(null);
   const [description, setDescription] = useState('');
+  const [favorites, setFavorites] = useState([]);
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
 
   const handleSearch = () => {
     fetch(`https://pokeapi.co/api/v2/pokemon/${search.toLowerCase()}`)
       .then((res) => res.json())
-      .then((pokemon) => {
-        setPokemonData(pokemon);
+      .then((data) => {
+        setPokemonData(data);
       })
       .catch((err) => {
-        console.error(err, 'Error');
+        console.error('Error:', err);
       });
   };
 
@@ -24,13 +26,47 @@ const useSearch = () => {
           const english = characteristic.descriptions.find(
             (desc) => desc.language.name === 'en'
           );
-          setDescription(english.description);
+          setDescription(english?.description);
         })
         .catch((err) => {
-          console.error(err, 'Error');
+          console.error('Error:', err);
         });
     }
   }, [pokemonData]);
+
+  useEffect(() => {
+    const stored = localStorage.getItem('favorites');
+    if (stored) {
+      setFavorites(JSON.parse(stored));
+    }
+  }, []);
+
+  const handleFavorite = () => {
+    if (!pokemonData) return;
+
+    const newFavorite = {
+      id: pokemonData.id,
+      name: pokemonData.name,
+      image: pokemonData.sprites.front_default,
+      types: pokemonData.types.map((t) => t.type.name),
+    };
+
+    const alreadyFavorited = favorites.some(
+      (fav) => fav.name === newFavorite.name
+    );
+
+    if (!alreadyFavorited) {
+      const updatedFavorites = [...favorites, newFavorite];
+      setFavorites(updatedFavorites);
+      localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+    }
+  };
+
+  const removeFavorite = (nameToRemove) => {
+    const updated = favorites.filter((fav) => fav.name !== nameToRemove);
+    setFavorites(updated);
+    localStorage.setItem('favorites', JSON.stringify(updated));
+  };
 
   return {
     handleSearch,
@@ -38,6 +74,11 @@ const useSearch = () => {
     setSearch,
     pokemonData,
     description,
+    handleFavorite,
+    favorites,
+    removeFavorite,
+    showFavoritesOnly,
+    setShowFavoritesOnly,
   };
 };
 
