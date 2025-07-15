@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import useSearch from '../hooks/useSearch';
 import SearchForm from './SearchForm';
 import PokemonCard from './PokemonCard';
